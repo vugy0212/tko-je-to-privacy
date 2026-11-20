@@ -1,4 +1,4 @@
-# TkoJeTo — Instant Bio & Kontekst | Politika privatnosti (Privacy Policy)
+# WhoIsIt — TkoJeTo (Instant Bio & Context) | Politika privatnosti (Privacy Policy)
 
 **Datum stupanja na snagu / Effective Date:** 19. studenoga 2026.  
 **Verzija ekstenzije / Extension Version:** 1.0.0
@@ -8,7 +8,7 @@
 ## Hrvatski (HR)
 
 ### O ekstenziji (Popratni tekst)
-**TkoJeTo — Instant Bio & Kontekst** besplatna je *Zero-Backend* Chrome ekstenzija namijenjena čitateljima informativnih portala (primarno Ex-Yu regije). Tijekom čitanja članaka omogućuje trenutačni uvid u biografiju, funkciju, akademski profil i novije vijesti o javnim osobama — jednim klikom na prepoznato ime ili ručnim označavanjem imena mišem, uz automatsku Ex-Yu morfološku normalizaciju (svođenje padeža i dvostrukih prezimena na nominativ).
+**WhoIsIt — TkoJeTo** besplatna je *Zero-Backend* Chrome ekstenzija namijenjena čitateljima informativnih portala (Ex-Yu i međunarodni portali). Tijekom čitanja članaka omogućuje trenutačni uvid u biografiju, funkciju, akademski profil i novije vijesti o javnim osobama — jednim klikom na prepoznato ime ili ručnim označavanjem imena mišem, uz automatsku Ex-Yu morfološku normalizaciju (svođenje padeža i dvostrukih prezimena na nominativ).
 
 ---
 
@@ -49,13 +49,13 @@ Kada zatražite podatke o osobi, pozadinski servis šalje upit s imenom osobe is
 ## English (EN)
 
 ### Extension Overview
-**TkoJeTo — Instant Bio & Kontekst** is a free, zero-backend Chrome extension built for readers of news portals (primarily across the Ex-Yu region). It provides an instant bio card, structured facts, academic context, and recent news headlines for public figures when clicking highlighted names or selecting text, featuring morphological normalization for South Slavic cases and double surnames.
+**WhoIsIt — TkoJeTo** is a free, zero-backend Chrome extension built for readers of news portals (international and Ex-Yu region). It provides an instant bio card, structured facts, academic context, and recent news headlines for public figures when clicking highlighted names or selecting text, featuring morphological normalization for South Slavic cases and double surnames.
 
 ---
 
 ### Privacy Policy
 
-**TkoJeTo** is built on Privacy-by-Design principles and operates without any proprietary backend server.
+**WhoIsIt — TkoJeTo** is built on Privacy-by-Design principles and operates without any proprietary backend server.
 
 #### 1. Data Collection
 **We do not collect, transmit to developer servers, sell, or track any personal or browsing data.** Specifically:
