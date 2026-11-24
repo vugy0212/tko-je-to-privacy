@@ -1,7 +1,7 @@
 # WhoIsIt — TkoJeTo (Instant Bio & Context) | Politika privatnosti (Privacy Policy)
 
-**Datum stupanja na snagu / Effective Date:** 22. studenoga 2026.  
-**Verzija ekstenzije / Extension Version:** 1.1.0
+**Datum stupanja na snagu / Effective Date:** 24. studenoga 2026.  
+**Verzija ekstenzije / Extension Version:** 1.3.0
 
 ---
 
@@ -23,7 +23,7 @@ Ekstenzija **WhoIsIt — TkoJeTo** dizajnirana je prema načelu maksimalne priva
 - **Ne zahtijeva** korisnički račun, registraciju niti unos osobnih podataka (ime, e-mail, IP adresa).
 
 #### 2. Kako ekstenzija obrađuje tekst na stranici?
-- **Lokalno prepoznavanje imena:** Skripta za prepoznavanje imena u člancima (`content.js`) izvršava se **isključivo lokalno u vašem pregledniku**. Cijeli tekst članka nikada se ne šalje izvan vašeg uređaja.
+- **Lokalno prepoznavanje imena i kontekstualno rangiranje:** Skripta za prepoznavanje imena i analizu općih tematskih kategorija okolnog odlomka radi točnijeg poretka imenjaka (`content.js`) izvršava se **isključivo lokalno u vašem pregledniku**. Cijeli tekst članka nikada se ne šalje izvan vašeg uređaja.
 - **Slanje pojedinačnog upita na vaš zahtjev:** Tek kada vi izravno kliknete na podcrtano ime ili označite ime mišem i zatražite prikaz kartice, pozadinski servis ekstenzije (`background.js`) šalje **isključivo normalizirano ime i prezime te osobe** javnim servisima kako bi dohvatio enciklopedijski sažetak i javni kontekst.
 - **Provjera licenci slika i zaštita referrera (`no-referrer`):** Metapodaci i slobodne licence fotografija s Wikimedia Commonsa provjeravaju se putem Wikipedijina MediaWiki `imageinfo` API-ja (`*.wikipedia.org`) kako bi se prikazivale samo slobodno licencirane slike s navedenim autorom i licencom, a same slike učitavaju se s atributom `referrerPolicy="no-referrer"` kako vanjski poslužitelji ne bi saznali adresu stranice koju čitate.
 
@@ -37,7 +37,7 @@ Kada zatražite podatke o osobi, pozadinski servis šalje upit s imenom osobe is
 6. **Google Translate** (`translate.googleapis.com`) — isključivo za prijevod javnih biografskih tekstova sa stranih jezika na odabrani jezik prikaza korisnika.
 
 #### 4. Dozvole ekstenzije (*Permissions*)
-- `storage`: Koristi se isključivo lokalno na vašem uređaju (`chrome.storage.local` i `chrome.storage.session`) za spremanje vaših postavki (primarni jezik, prozirnost kartice, isključene domene) i privremene 24-satne predmemorije (*cache*, ograničene na najviše 300 zapisa) radi bržeg rada i manjeg broja mrežnih upita.
+- `storage`: Koristi se isključivo lokalno na vašem uređaju (`chrome.storage.local` i `chrome.storage.session`) za spremanje vaših postavki (primarni jezik, tema prikaza, prozirnost kartice, isključene domene) i privremene 24-satne predmemorije (*cache*, ograničene na najviše 300 zapisa) radi bržeg rada i manjeg broja mrežnih upita.
 - `activeTab`: Koristi se isključivo u trenutku kada otvorite skočni prozor postavki ekstenzije, kako bi vam se mogao ponuditi brzi gumb za isključivanje ili ponovno uključivanje ekstenzije na trenutačnoj domeni (npr. `Isključi na: portal.hr`).
 
 #### 5. Kontrola nad podacima i isključenja
@@ -69,8 +69,8 @@ Kada zatražite podatke o osobi, pozadinski servis šalje upit s imenom osobe is
 - No user account or registration is required.
 
 #### 2. Local Processing & Query Transmission
-- **On-device detection:** Automatic person-name recognition (`content.js`) runs **100% locally inside your browser**. Full webpage text never leaves your device.
-- **User-initiated lookup only:** Only when you click a recognized name or manually trigger a lookup for a highlighted selection (2–5 words) does the background service worker (`background.js`) send **only the normalized person name query** to public APIs to retrieve biographical summaries.
+- **On-device detection & disambiguation:** Automatic person-name recognition and broad topic-category detection around the selected name for ranking namesakes (`content.js`) run **100% locally inside your browser**. Full webpage text never leaves your device.
+- **User-initiated lookup only:** Only when you click a recognized name or manually trigger a lookup for a highlighted selection (2–5 words, or 1 word with `Alt`) does the background service worker (`background.js`) send **only the normalized person name query** to public APIs to retrieve biographical summaries.
 - **Image license check & referrer protection:** Wikimedia Commons photo metadata/licenses are verified via Wikipedia's MediaWiki `imageinfo` API (`*.wikipedia.org`) so only free-licensed images with attribution are shown, and thumbnails enforce `referrerPolicy="no-referrer"` so external image hosts do not receive the URL of the webpage you are reading.
 
 #### 3. Third-Party Public Read-Only APIs Queried
@@ -83,7 +83,7 @@ When you initiate a person lookup, only the queried person's name (and when tran
 - **Google Translate** (`https://translate.googleapis.com/*`)
 
 #### 4. Extension Permissions Justification
-- `storage`: Used strictly locally (`chrome.storage.local` and `chrome.storage.session`) to persist user preferences (language, background opacity slider, excluded domains list) and a bounded 24-hour lookup cache (capped at 300 entries).
+- `storage`: Used strictly locally (`chrome.storage.local` and `chrome.storage.session`) to persist user preferences (language, appearance theme, background opacity slider, excluded domains list) and a bounded 24-hour lookup cache (capped at 300 entries).
 - `activeTab`: Accessed solely when opening the extension settings popup in order to read the current tab's hostname for the 1-click *"Exclude / Re-enable on this domain"* control.
 
 #### 5. Data Sharing & Chrome Web Store Limited Use Compliance
