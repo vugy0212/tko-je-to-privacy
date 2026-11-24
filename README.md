@@ -1,104 +1,57 @@
-# WhoIsIt — TkoJeTo (Instant Bio & Context) | Politika privatnosti (Privacy Policy)
+# WhoIsIt — TkoJeTo (Instant Bio & Context)
 
-**Datum stupanja na snagu / Effective Date:** 22. studenoga 2026.  
-**Verzija ekstenzije / Extension Version:** 1.1.0
+[![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-Available-blue?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/whoisit-%E2%80%94-tkojeto-instant/ehachdpjcahdlebkdmfpnagjchaigokk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
----
+Chrome ekstenzija (**Manifest V3**, čisti Vanilla JS bez vanjskih ovisnosti i build koraka) koja tijekom čitanja portala pruža trenutni uvid u biografiju, ulogu i aktualni kontekst javnih osoba — klikom na automatski podcrtano ime ili označavanjem teksta mišem.
 
-## Hrvatski (HR)
+> 🚀 **Instalirajte izravno s [Chrome Web Store](https://chromewebstore.google.com/detail/whoisit-%E2%80%94-tkojeto-instant/ehachdpjcahdlebkdmfpnagjchaigokk)**!
 
-### O ekstenziji (Popratni tekst)
-**WhoIsIt — TkoJeTo** besplatna je *Zero-Backend* Chrome ekstenzija namijenjena čitateljima informativnih portala (HR, SR, BiH i međunarodni portali). Tijekom čitanja članaka omogućuje trenutačni uvid u biografiju, funkciju, akademski profil i novije vijesti o javnim osobama — jednim klikom na prepoznato ime ili ručnim označavanjem imena mišem, uz automatsku morfološku normalizaciju (svođenje padeža i dvostrukih prezimena na nominativ).
+## Glavne značajke
 
----
+- **Automatsko prepoznavanje i podcrtavanje imena** u člancima (uključujući Ex-Yu padeže, inicijale s točkom i bez točke, imena s crticom, portalne tipfelere poput `llija` → `Ilija` te imena unutar portalnih `<a>` linkova uz presretanje navigacije), uz **pretragu jednoriječnih prezimena i nadimaka na zahtjev** (`Alt + označavanje/dvoklik`).
+- **Ex-Yu morfološka normalizacija** — automatsko svođenje kosih padeža (*s Andrejem Plenkovićem*, *Ane Brnabić*, *Iliji Srdanoviću*, *Lidiju Vukićević*) i uklanjanje titula (`dr. sc.`, `prof.`, `gen.`) na nominativ.
+- **Lokalno kontekstualno rangiranje imenjaka (*Smart Disambiguation*)** — lokalna analiza šire teme okolnog odlomka (*sport, politika, film, glazba, znanost, pravo, biznis, književnost, vojska*) u pregledniku postavlja najvjerojatnijeg imenjaka na prvi tab (tekst članka nikad ne napušta uređaj).
+- **Kaskadni besplatni izvori podataka (Zero-Backend, bez API ključeva):**
+  1. **Wikipedia** (`hr`, `sr` latinica/ćirilica, `bs`, `en`) + automatski prijevod stranih sažetaka na odabrani jezik
+  2. **Wikidata** (strukturirani podaci: rođenje/dob, mjesto, dužnost, stranka, zanimanje, obrazovanje, državljanstvo)
+  3. **OpenAlex API** (akademski i znanstveni profili, institucije, broj radova, citati i h-indeks)
+  4. **DuckDuckGo Instant Answer API** (dodatni sažeci za međunarodne osobe)
+  5. **Google Vijesti RSS** (*"Nedavno u vijestima"* — zadnja 3 novinska naslova)
+- **Shadow DOM izolirani UI, teme i oznaka godina života** — izbor **Tamne / Svijetle / Automatske (Sustav)** teme kartice i popupa, pametno bočno pozicioniranje, oznaka godina života za povijesne i preminule osobe (`1856–1943`), proširivi prikaz (**Pročitaj još ▾**), brzi fallback linkovi na Google/Wikipedia pretragu te podnožje s klikabilnim izvorom, licencom (`CC BY-SA 4.0` / `CC0 1.0`) i ogradom od odgovornosti.
+- **Povlačenje, višestruko prikvačivanje uz tekst i tipkovnička navigacija** — karticu možete povući za zaglavlje, prikvačiti je ikonom **📌** na točno mjesto u dokumentu da se skrola sa stranicom (do **4 prikvačene kartice** istovremeno uz 1 aktivnu plutajuću, zaštitu od preklapanja i duplikata) te mijenjati tabove imenjaka strelicama `←` / `→`.
+- **Službena i18n lokalizacija i lokalizirani datumi** — `_locales/` podrška za engleski, hrvatski i srpski u trgovinama (`en`, `hr`, `sr`), automatsko prepoznavanje jezika preglednika pri prvoj instalaciji te formatiranje datuma prema odabranom jeziku.
+- **Provjera licenci fotografija (Wikimedia Commons)** — prikazuju se isključivo fotografije s Wikimedia Commonsa s potvrđenom slobodnom licencom uz navođenje autora, licence i poveznice na datoteku; lokalne *fair use* i neprovjerene slike automatski se filtriraju (prikazuju se inicijali).
+- **Podešavanje prozirnosti i Peek-through** — klizač u postavkama (60% – 100%) s modernim *frosted glass* (backdrop-filter) efektom koji zadržava 100% oštrinu slova unutar kartice. Dok je prozor otvoren, držanje tipke **Alt** ili ikone oka 👁️ u zaglavlju privremeno ga čini prozirnim radi brzog čitanja teksta portala ispod njega.
+- **Upravljanje isključenim stranicama i servisima** — brzi gumb jednim klikom za isključivanje/uključivanje aktivne domene, prilagodljivi popis isključenih domena i servisa u postavkama te zadano izuzeće za web-aplikacije (Gmail, Google Docs/Drive, GitHub, Figma, Slack itd.).
+- **Predmemoriranje, privatnost i performanse** — 24-satno predmemoriranje u memoriji i `chrome.storage.local` s automatskim čišćenjem isteklih zapisa (TTL) i LRU ograničenjem na 300 unosa, `referrerPolicy = 'no-referrer'` na slikama avatara, inkrementalno `MutationObserver` skeniranje novododanih elemenata te podrška za tipkovnicu (`Tab`, `Enter`/`Space`) na podcrtanim imenima.
 
-### Politika privatnosti
+## Struktura projekta
 
-Ekstenzija **WhoIsIt — TkoJeTo** dizajnirana je prema načelu maksimalne privatnosti (**Privacy-by-Design**) i radi u potpunosti bez vlastitog poslužitelja (*Zero-Backend*).
+- `manifest.json` — Manifest V3 konfiguracija, `default_locale`, dozvole i `host_permissions`
+- `_locales/` — Službene lokalizacije trgovine i preglednika (`en`, `hr`, `sr`)
+- `background.js` — Service Worker (normalizacija, detekcija jezika, 24h cache s automatskim čišćenjem, kaskadni dohvat, provjera Commons licenci i prijevod)
+- `content.js` — Detekcija selekcije, inkrementalno automatsko podcrtavanje imena i Shadow DOM UI s podnožjem izvora/licenci i brzim fallback tražilicama
+- `popup.html` & `popup.js` — Postavke (uključeno/isključeno, primarni jezik, fallback jezici, način prikaza, tema tamna/svijetla/sustav, automatsko podcrtavanje, klizač prozirnosti, isključene stranice/servisi, uputa, izvori/licence/ograda i brisanje predmemorije)
+- `tests/extension.test.js` — Unit testovi (`node --test tests/extension.test.js`)
+- `icons/` — PNG ikone (`16x16`, `48x48`, `128x128`)
+- `ROADMAP.md` — Plan daljnjeg razvoja po fazama
+- `LICENSE` — MIT licenca izvornog koda
 
-#### 1. Koje podatke prikupljamo?
-**Ne prikupljamo, ne pohranjujemo na vanjskim poslužiteljima i ne pratimo nikakve osobne podatke korisnika.** Ekstenzija:
-- **Ne prikuplja** povijest pregledavanja (*browsing history*), URL-ove članaka koje čitate ni sadržaj stranica.
-- **Ne koristi** kolačiće trećih strana (*tracking cookies*), Google Analytics ni ikakve oglasne ili analitičke SDK-ove.
-- **Ne zahtijeva** korisnički račun, registraciju niti unos osobnih podataka (ime, e-mail, IP adresa).
+## Izvori, licence i ograda od odgovornosti
 
-#### 2. Kako ekstenzija obrađuje tekst na stranici?
-- **Lokalno prepoznavanje imena:** Skripta za prepoznavanje imena u člancima (`content.js`) izvršava se **isključivo lokalno u vašem pregledniku**. Cijeli tekst članka nikada se ne šalje izvan vašeg uređaja.
-- **Slanje pojedinačnog upita na vaš zahtjev:** Tek kada vi izravno kliknete na podcrtano ime ili označite ime mišem i zatražite prikaz kartice, pozadinski servis ekstenzije (`background.js`) šalje **isključivo normalizirano ime i prezime te osobe** javnim servisima kako bi dohvatio enciklopedijski sažetak i javni kontekst.
-- **Provjera licenci slika i zaštita referrera (`no-referrer`):** Metapodaci i slobodne licence fotografija s Wikimedia Commonsa provjeravaju se putem Wikipedijina MediaWiki `imageinfo` API-ja (`*.wikipedia.org`) kako bi se prikazivale samo slobodno licencirane slike s navedenim autorom i licencom, a same slike učitavaju se s atributom `referrerPolicy="no-referrer"` kako vanjski poslužitelji ne bi saznali adresu stranice koju čitate.
+- **Tekst i sažeci:** Biografski tekstovi preuzimaju se s Wikipedije (`wikipedia.org`) pod licencom `CC BY-SA 4.0` (uz mogući strojni prijevod putem Google Translatea).
+- **Fotografije:** Prikazuju se isključivo slobodno licencirane fotografije s Wikimedia Commonsa uz navođenje autora, licence i poveznice na stranicu datoteke; lokalne *fair use* slike i slike bez jasne slobodne licence automatski se preskaču.
+- **Ostali podaci:** Wikidata (`CC0 1.0`), OpenAlex (`CC0 1.0`), DuckDuckGo Instant Answer API i Google Vijesti RSS (vlasništvo izvornih nakladnika).
+- **Ograda:** Podaci se prikazuju izravno iz javnih izvora bez neovisne provjere — mogu biti nepotpuni, zastarjeli ili povremeno odgovarati pogrešnoj osobi (osobito kod istih imena i prezimena). Projekt nije povezan sa Zakladom Wikimedia niti ga ona podržava.
 
-#### 3. Vanjski javni API izvori koji primaju upit (samo ime osobe)
-Kada zatražite podatke o osobi, pozadinski servis šalje upit s imenom osobe isključivo sljedećim javnim izvorima putem HTTPS-a:
-1. **Wikipedia** (`*.wikipedia.org`) — sažeci, pretraga enciklopedijskih članaka i provjera metapodataka/slobodnih licenci fotografija s Wikimedia Commonsa (`imageinfo`/`extmetadata`).
-2. **Wikidata** (`*.wikidata.org`) — javni strukturirani podaci (datum rođenja, uloge, organizacije, obrazovanje).
-3. **OpenAlex API** (`api.openalex.org`) — javni akademski i znanstveni profili istraživača.
-4. **DuckDuckGo Instant Answer API** (`api.duckduckgo.com`) — rezervni javni enciklopedijski sažeci.
-5. **Google News RSS** (`news.google.com`) — javni naslovi novijih vijesti vezanih uz traženu osobu.
-6. **Google Translate** (`translate.googleapis.com`) — isključivo za prijevod javnih biografskih tekstova sa stranih jezika na odabrani jezik prikaza korisnika.
+## Instalacija u Google Chrome
 
-#### 4. Dozvole ekstenzije (*Permissions*)
-- `storage`: Koristi se isključivo lokalno na vašem uređaju (`chrome.storage.local` i `chrome.storage.session`) za spremanje vaših postavki (primarni jezik, prozirnost kartice, isključene domene) i privremene 24-satne predmemorije (*cache*, ograničene na najviše 300 zapisa) radi bržeg rada i manjeg broja mrežnih upita.
-- `activeTab`: Koristi se isključivo u trenutku kada otvorite skočni prozor postavki ekstenzije, kako bi vam se mogao ponuditi brzi gumb za isključivanje ili ponovno uključivanje ekstenzije na trenutačnoj domeni (npr. `Isključi na: portal.hr`).
+### 1. Službena instalacija (Preporučeno)
+Jednostavno posjetite **[WhoIsIt — TkoJeTo na Chrome Web Store](https://chromewebstore.google.com/detail/whoisit-%E2%80%94-tkojeto-instant/ehachdpjcahdlebkdmfpnagjchaigokk)** i kliknite **"Add to Chrome"** (*Dodaj u Chrome*).
 
-#### 5. Kontrola nad podacima i isključenja
-- Ekstenzija po zadanom automatski preskače osjetljive web-aplikacije (npr. `mail.google.com`, `docs.google.com`, `drive.google.com`, `outlook.live.com`, `github.com`, `web.whatsapp.com` itd.).
-- U postavkama ekstenzije u svakom trenutku možete dodati vlastite domene na popis isključenih stranica, obrisati cjelokupnu 24-satnu predmemoriju jednim klikom ili ukloniti ekstenziju (čime se svi lokalno spremljeni podaci odmah brišu).
-
-#### 6. Izvori, licence i ograda od odgovornosti
-- **Izvori i licence sadržaja:** Biografski sažeci s Wikipedije dostupni su pod licencom `CC BY-SA 4.0` (uz mogući strojni prijevod s drugog jezika), strukturirani podaci s Wikidate i OpenAlexa pod licencom `CC0 1.0`, fotografije isključivo s Wikimedia Commonsa pod potvrđenim slobodnim licencama uz navedenog autora, licencu i poveznicu na datoteku (lokalne *fair use* i neprovjerene slike ne prikazuju se), a naslovi iz Google Vijesti RSS-a pripadaju izvornim nakladnicima.
-- **Točnost podataka i moguća zamjena osoba:** Sadržaj se dohvaća i prikazuje izravno iz javnih izvora bez neovisne uredničke provjere. Može biti nepotpun, zastario ili netočno preveden, a ekstenzija može povremeno povezati pogrešnu osobu kod istih imena i prezimena. Za važne odluke uvijek provjerite povezani izvorni članak.
-- **Neovisnost projekta:** **WhoIsIt — TkoJeTo** je neovisan projekt i nije povezan sa Zakladom Wikimedia, Wikipedijom, OpenAlexom, DuckDuckGo-om ni Googleom, niti ga oni podržavaju.
-
----
-
-## English (EN)
-
-### Extension Overview
-**WhoIsIt — TkoJeTo** is a free, zero-backend Chrome extension built for readers of news portals (HR, SR, BiH, and international news portals). It provides an instant bio card, structured facts, academic context, and recent news headlines for public figures when clicking highlighted names or selecting text, featuring morphological normalization for South Slavic cases and double surnames.
-
----
-
-### Privacy Policy
-
-**WhoIsIt — TkoJeTo** is built on Privacy-by-Design principles and operates without any proprietary backend server.
-
-#### 1. Data Collection
-**We do not collect, transmit to developer servers, sell, or track any personal or browsing data.** Specifically:
-- We **do not** collect browsing history, visited URLs, page contents, or user identifiers.
-- We **do not** use third-party analytics, telemetry, tracking cookies, or advertising SDKs.
-- No user account or registration is required.
-
-#### 2. Local Processing & Query Transmission
-- **On-device detection:** Automatic person-name recognition (`content.js`) runs **100% locally inside your browser**. Full webpage text never leaves your device.
-- **User-initiated lookup only:** Only when you click a recognized name or manually trigger a lookup for a highlighted selection (2–5 words) does the background service worker (`background.js`) send **only the normalized person name query** to public APIs to retrieve biographical summaries.
-- **Image license check & referrer protection:** Wikimedia Commons photo metadata/licenses are verified via Wikipedia's MediaWiki `imageinfo` API (`*.wikipedia.org`) so only free-licensed images with attribution are shown, and thumbnails enforce `referrerPolicy="no-referrer"` so external image hosts do not receive the URL of the webpage you are reading.
-
-#### 3. Third-Party Public Read-Only APIs Queried
-When you initiate a person lookup, only the queried person's name (and when translating foreign summaries, the public snippet text) is sent over HTTPS to:
-- **Wikipedia** (`https://*.wikipedia.org/*`) — article summaries, search, and Wikimedia Commons `imageinfo`/`extmetadata` license & author verification
-- **Wikidata** (`https://*.wikidata.org/*`)
-- **OpenAlex API** (`https://api.openalex.org/*`)
-- **DuckDuckGo Instant Answer API** (`https://api.duckduckgo.com/*`)
-- **Google News RSS** (`https://news.google.com/*`)
-- **Google Translate** (`https://translate.googleapis.com/*`)
-
-#### 4. Extension Permissions Justification
-- `storage`: Used strictly locally (`chrome.storage.local` and `chrome.storage.session`) to persist user preferences (language, background opacity slider, excluded domains list) and a bounded 24-hour lookup cache (capped at 300 entries).
-- `activeTab`: Accessed solely when opening the extension settings popup in order to read the current tab's hostname for the 1-click *"Exclude / Re-enable on this domain"* control.
-
-#### 5. Data Sharing & Chrome Web Store Limited Use Compliance
-- User data is never sold, rented, or shared with advertisers, data brokers, or unrelated third parties.
-- Sensitive productivity/messaging web apps (e.g., Gmail, Google Docs, Outlook, GitHub, Slack, WhatsApp Web) are excluded by default, and users can add or remove any custom domain in settings.
-- Users may clear all cached lookups at any time in settings or uninstall the extension to immediately delete all locally stored preferences and cache entries.
-
-#### 6. Sources, Licenses & Disclaimer
-- **Content sources & licenses:** Biographical summaries from Wikipedia are licensed under `CC BY-SA 4.0` (with optional machine translation); structured facts from Wikidata and OpenAlex under `CC0 1.0`; photos exclusively from Wikimedia Commons under verified free licenses crediting author, license, and source file link (non-free / fair-use uploads and unverified images are omitted); news headlines from Google News RSS belong to original publishers.
-- **Accuracy & namesakes:** Content is displayed directly from public third-party sources without independent verification and may be incomplete, outdated, inaccurately translated, or occasionally match a namesake. Always verify important details in the linked source article.
-- **No affiliation:** **WhoIsIt — TkoJeTo** is an independent project and is not affiliated with or endorsed by the Wikimedia Foundation, Wikipedia, OpenAlex, DuckDuckGo, or Google.
-
----
-
-### Kontakt / Support & Contact
-Za pitanja vezana uz privatnost ili prijavu problema otvorite zahtjev na javnom GitHub repozitoriju:  
-For privacy inquiries or support requests, please open an issue on the public GitHub repository:  
-- [https://github.com/vugy0212/tko-je-to-privacy/issues](https://github.com/vugy0212/tko-je-to-privacy/issues)
+### 2. Ručna instalacija iz izvornog koda (za developere)
+1. Klonirajte ili preuzmite ovaj repozitorij.
+2. Otvorite `chrome://extensions` u pregledniku.
+3. Uključite **Developer mode** u gornjem desnom kutu.
+4. Kliknite **Load unpacked** i odaberite mapu ovog repozitorija.
